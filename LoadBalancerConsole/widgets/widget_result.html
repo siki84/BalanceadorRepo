@@ -28,47 +28,59 @@
 		}).tablesorterPager({
 			container : $("#pager")
 		});
+		
+		//For server sent event.
+		/*if ( typeof (EventSource) !== "undefined") {
+			var source = new EventSource("../jsonfeed/applicationResults.json");
+			source.onmessage = function(event) {
+				var info = event.data[0];
+				var raceCondition = "Yes";
+				if (parseInt(info.value) > 0)
+					raceCondition = "No";
+				var row = '<tr style="display:none;">' + '<td>' + info.time + '</td>' + '<td>' + info.balance + '</td>' + '<td>' + raceCondition + '</td></tr>';
+				$("#historyTable").find('tbody').append(row);
+				$("#historyTable").trigger('update');
+			};
+		}*/
+		
+		setInterval(function() {
+			$.ajax({
+				url : 'jsonfeed/applicationResults.json',
+				success : function(responce) {
+					var info = responce.data[0];
+					var raceCondition = "Yes";
+					if (parseInt(info.balance) > 0)
+						raceCondition = "No";
+					var now = new Date();
+   					var outStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString()
+					var row = '<tr style="display:none;">' + '<td>' +outStr + '</td>' + '<td>' + info.balance + '</td>' + '<td>' + raceCondition + '</td></tr>';
+					$("#historyTable").find('tbody').prepend(row);
+					$("#historyTable").trigger('update');
+				},
+				cache : false
+			});
 
+		}, 2000);
 	});
 
 </script>
-	<img id="loadingHistory" src="themes/default/images/loading.gif" alt="loading" class="hidden"
-	style="position: absolute; top: 50%; left: 50%; margin-top: -25px; margin-left: -25px;" />
-	<div id="pager" class="tablesorterPager">
-		<img src="themes/default/images/first.png" class="prev" alt="first" />
-		<img src="themes/default/images/prev.png" class="prev" alt="prev" />
-		<input type="text" class="pagedisplay" />
-		<img src="themes/default/images/next.png" class="last" alt="next" />
-		<img src="themes/default/images/last.png" class="last" alt="last" />
-	</div>
-	<table id="historyTable" class="tablesorter">
-		<thead>
-			<tr>
-				<th style="width: 40%;">Execution On </th>
-				<th style="width: 20%;">Before </th>
-				<th style="width: 20%;">Withdraw </th>
-				<th style="width: 20%;">After </th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td> 07/10/2013 00:00:00 </td>
-				<td> 1000 </td>
-				<td> 10</td>
-				<td> 990 </td>
-			</tr>
-			<tr>
-				<td> 07/10/2013 00:00:01 </td>
-				<td> 990  </td>
-				<td> 20 </td>
-				<td> 970 </td>
-			</tr>
-			<tr>
-				<td> 07/10/2013 00:00:03</td>
-				<td> 970  </td>
-				<td> 200 </td>
-				<td> 200 </td>
-			</tr>
-		</tbody>
-	</table>
+<img id="loadingHistory" src="themes/default/images/loading.gif" alt="loading" class="hidden"
+style="position: absolute; top: 50%; left: 50%; margin-top: -25px; margin-left: -25px;" />
+<table id="historyTable" class="tablesorter" style="border: 0px;">
+	<thead>
+		<tr>
+			<th style="width: 40%;">Execution On </th>
+			<th style="width: 30%;">Balance </th>
+			<th style="width: 30%;">Race Condition? </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> 7/12/2013 7:25:31 PM </td>
+			<td> 80 </td>
+			<td> No</td>
+		</tr>
+
+	</tbody>
+</table>
 
