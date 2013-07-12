@@ -1,0 +1,74 @@
+<link rel="stylesheet" type="text/css" href="../themes/default/dashboardui.css" />
+<link rel="stylesheet" type="text/css" href="../themes/default/jquery-ui-1.10.3.custom.css" />
+<link type="text/css" href="../themes/default/jquery.tablesorter.pager.css" rel="stylesheet" />
+<link type="text/css" href="../themes/default/sortTable.css" rel="stylesheet" />
+
+<script type="text/javascript" src="../js/lib/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="../js/lib/jquery-ui-1.10.3.custom.js"></script>
+<script type="text/javascript" src="../js/lib/highcharts.js"></script>
+<script type="text/javascript" src="../js/lib/tablesort/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="../js/lib/tablesort/jquery.tablesorter.pager.js"></script>
+<script type="text/javascript" src="../js/lib/tablesort/jquery.tablesorter.widgets.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#historyTable").tablesorter({
+
+			// widget code now contained in the jquery.tablesorter.widgets.js file
+			widgets : ['uitheme', 'flick'],
+
+			// adding zebra striping, using content and default styles - the ui css removes the background from default
+			widgetZebra : {
+				css : ["ui-widget-content", "ui-state-default"]
+			},
+
+			widgetUitheme : {
+				css : ["ui-icon-carat-2-n-s", "ui-icon-carat-1-s", "ui-icon-carat-1-n"]
+			}
+		}).tablesorterPager({
+			container : $("#pager")
+		});
+
+	});
+
+</script>
+	<img id="loadingHistory" src="themes/default/images/loading.gif" alt="loading" class="hidden"
+	style="position: absolute; top: 50%; left: 50%; margin-top: -25px; margin-left: -25px;" />
+	<div id="pager" class="tablesorterPager">
+		<img src="themes/default/images/first.png" class="prev" alt="first" />
+		<img src="themes/default/images/prev.png" class="prev" alt="prev" />
+		<input type="text" class="pagedisplay" />
+		<img src="themes/default/images/next.png" class="last" alt="next" />
+		<img src="themes/default/images/last.png" class="last" alt="last" />
+	</div>
+	<table id="historyTable" class="tablesorter">
+		<thead>
+			<tr>
+				<th style="width: 40%;">Execution On </th>
+				<th style="width: 20%;">Time(s) </th>
+				<th style="width: 20%;">Value </th>
+				<th style="width: 20%;">Race? </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td> 07/10/2013 00:00:00 </td>
+				<td> 0.03 </td>
+				<td> 40 </td>
+				<td> No </td>
+			</tr>
+			<tr>
+				<td> 07/10/2013 00:00:01 </td>
+				<td> 0.04  </td>
+				<td> 500 </td>
+				<td> Yes </td>
+			</tr>
+			<tr>
+				<td> 07/10/2013 00:00:03</td>
+				<td> 0.06  </td>
+				<td> 200 </td>
+				<td> No </td>
+			</tr>
+		</tbody>
+	</table>
+

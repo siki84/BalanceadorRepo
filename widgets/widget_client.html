@@ -1,0 +1,166 @@
+<link rel="stylesheet" type="text/css" href="../themes/default/dashboardui.css" />
+<link rel="stylesheet" type="text/css" href="../themes/default/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../js/lib/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="../js/lib/jquery-ui-1.10.3.custom.js"></script>
+<script type="text/javascript" src="../js/lib/highcharts.js"></script>
+
+<script type="text/javascript">
+	var lastReceivingTime;
+	var chartRefreshIntervalId;
+
+	$(document).ready(function() {
+		
+		$("#btnStartStop").button().toggle(function() {
+			$(this).button('option', 'label', ' Stop');
+			$(this).addClass("stop");
+			var seriesSent = Highcharts.charts[0].series[0];
+			var seriesResponded = Highcharts.charts[0].series[1];
+			chartRefreshIntervalId = setInterval(function() {
+				$.ajax({
+					url : 'jsonfeed/clientRequests.json',
+					success : function(responce) {
+						var x = (new Date()).getTime();
+						// current time
+						var points = responce.data;
+						//Random for demostration
+						var randomNumber = Math.round(Math.random() * 8);
+						$.each(points, function(index, point) {
+							//if(point.time > lastReceivingTime)
+							if (index == randomNumber) {
+								seriesSent.addPoint([x, parseInt(point.sent)], true, true);
+								seriesResponded.addPoint([x, parseInt(point.responded)], true, true);
+							}
+						});
+
+					},
+					cache : false
+				});
+			}, 2000);
+		}, function() {
+			$(this).button('option', 'label', 'Start');
+			$(this).removeClass("stop");
+			clearInterval(chartRefreshIntervalId);
+		});
+
+		$("#inputRequestsPerSecond").spinner({
+			min : 100,
+			max : 2000,
+			step : 200,
+			start : 100
+		});
+		
+		$("#divChart").highcharts({
+			chart : {
+				type : 'spline',
+				animation : Highcharts.svg
+				
+			},
+			title : {
+				text : 'Requests sent during last 1 minute'
+			},
+			credits : {
+				enabled : false
+			},
+			colors : ['#0073ea', '#ff0084'],
+			
+			xAxis : {
+				type : 'datetime',
+				tickPixelInterval : 150
+			},
+			yAxis : {
+				title : null,
+				min : 0,
+				max : 2000,
+				minorGridLineWidth : 0,
+				gridLineWidth : 0,
+				alternateGridColor : null,
+				plotBands : [{
+					from : 0,
+					to : 500,
+					color : '#f6f6f6'
+					
+				}, {
+					from : 500,
+					to : 1000,
+					color : '#ffffff'
+					
+				}, {
+					from : 1000,
+					to : 2000,
+					color : '#f6f6f6'
+					
+				}]
+			},
+			tooltip : {
+				headerFormat : '',
+				pointFormat : '<span style="color:{series.color}"></span><b>{point.y}</b> Request/seconds <br/>'
+			},
+			plotOptions : {
+				spline : {
+					lineWidth : 2,
+					states : {
+						hover : {
+							lineWidth : 3
+						}
+					},
+					marker : {
+						enabled : false
+					},
+					pointInterval : 10, // one hour
+					pointStart : 0
+				}
+			},
+			series : [{
+				name : 'Requests Sent',
+				data : (function() {
+					// generate an array of random data
+					var data = [], time = (new Date()).getTime(), i;
+
+					for ( i = -29; i <= 0; i++) {
+						data.push({
+							x : time + i * 2000,
+							y : 0
+						});
+					}
+					return data;
+				})()//430,520,540,470,350,410,560,740,690,710,790,790,750,670,770,770,740,700,710,580,590,740,
+				//820,850,940,810,1090,1040,1090,1240,1210,950,750,
+				//710,750,810,680,340,210,190,280,290,130,440,420,
+				//300,300]
+
+			}, {
+				name : 'Requests Responded',
+				data : (function() {
+					// generate an array of random data
+					var data = [], time = (new Date()).getTime(), i;
+
+					for ( i = -29; i <= 0; i++) {
+						data.push({
+							x : time + i * 2000,
+							y : 0
+						});
+					}
+					return data;
+				})()//000,000,000,000,000,000,010,000,030,00,
+				//200,040,100,210,400,500,300,400,200,300,400,1000,
+				//300,060,120,170,070,290,410,260,370,390,170,23,
+				//300,330,480,500,480,500,320,200,090,040,030,050,400]
+			}],
+			navigation : {
+				menuItemStyle : {
+					fontSize : '10px'
+				}
+			}
+		});
+	});
+
+</script>
+<div style ="width: 400px; height: 40px; margin: 0 auto">
+	<label for="inputRequestsPerSecond">Requests Per Second:</label>
+	<input id="inputRequestsPerSecond" name="value" />
+	<button id="btnStartStop">
+		Start
+	</button>
+</div>
+<div id="divChart" style="max-width: 95%; height: 400px; margin: 0 auto"></div>
+

@@ -1,0 +1,45 @@
+<link rel="stylesheet" type="text/css" href="../themes/default/dashboardui.css" />
+<link rel="stylesheet" type="text/css" href="../themes/default/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../js/lib/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="../js/lib/jquery-ui-1.10.3.custom.js"></script>
+<script type="text/javascript" src="../js/lib/highcharts.js"></script>
+
+
+<script type="text/javascript">
+  
+  $(document).ready(function() {
+  	$("button").button();
+    $("#btnUpgradeStartStop").button().toggle(function() {
+   		$(this).button('option', 'label', 'Stop  Upgrading');
+   		$(this).addClass("stop");
+	}, function() {
+   		$(this).button('option', 'label', 'Start Upgrading');
+   		$(this).removeClass("stop");
+	});
+	
+	$("#inputUpgradeInterval").spinner({
+      min: 10,
+      max: 500,
+      step: 20,
+      start: 10
+    }); 
+    
+  });
+  
+</script>
+<div style ="width: 400px; height: 40px; margin: 0 auto">
+	<label for="inputUpgradeInterval">Upgrade Interval:</label> <input id="inputUpgradeInterval" name="value" size="8"/>
+	<button id="btnUpgradeStartStop">Start Upgrading</button>
+</div>
+<div style ="width: 400px; height: 180px; margin: 0 auto">
+	<div style ="width: 120px;height: 200px;float: left;margin-left: 65px;"> 
+		<span style ="font-size: 96px;color:#0073ea;">6</span> </br><span>#Version N Server </span>
+	</div>
+	<div style ="width: 120px;height: 200px;float: left;margin-left: 65px;">
+		 <span style ="font-size: 96px;color:#ff0084;">1</span></br><span>#Version N+1 Server</span>
+	</div>
+</div>
+
+<button id="btnResetServers">Reset</button>
+
+

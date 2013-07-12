@@ -1,0 +1,26 @@
+div.tablesorterPager {
+	padding: 10px 0 10px 0;
+	background-color: #FFFFFF;
+	text-align: center;
+	height: 10px;
+}
+div.tablesorterPager span {
+	padding: 0 5px 0 5px;
+}
+div.tablesorterPager input.prev {
+	width: 10px;
+	margin-right: 10px;
+}
+div.tablesorterPager input.next {
+	width: 10px;
+	margin-left: 10px;
+}
+div.tablesorterPager input {
+	font-size: 14px;
+	width: 50px;
+	border: 1px solid #330000;
+	text-align: center;
+}
+
+
+  
