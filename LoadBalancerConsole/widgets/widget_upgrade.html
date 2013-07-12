@@ -4,42 +4,77 @@
 <script type="text/javascript" src="../js/lib/jquery-ui-1.10.3.custom.js"></script>
 <script type="text/javascript" src="../js/lib/highcharts.js"></script>
 
-
 <script type="text/javascript">
-  
-  $(document).ready(function() {
-  	$("button").button();
-    $("#btnUpgradeStartStop").button().toggle(function() {
-   		$(this).button('option', 'label', 'Stop  Upgrading');
-   		$(this).addClass("stop");
-	}, function() {
-   		$(this).button('option', 'label', 'Start Upgrading');
-   		$(this).removeClass("stop");
+	// for test purpose start
+	var serverUpgraded = 0;
+	var spnRefreshIntervalId;
+	var totalServerNumber = 7;
+
+	// for test purpose end
+
+	$(document).ready(function() {
+		$("button").button();
+		$("#btnUpgradeStartStop").button().toggle(function() {
+			$(this).button('option', 'label', 'Stop  Upgrading');
+			$(this).addClass("stop");
+			spnRefreshIntervalId = setInterval(function() {
+				$.ajax({
+					url : 'jsonfeed/serversUpgraded.json',
+					success : function(responce) {
+						// current time
+						serverNum = responce.data[0];
+						if (serverUpgraded <= parseInt(serverNum.serverNotUpgraded)) {
+							$("#spnServersVersionN").text(parseInt(serverNum.serverNotUpgraded) - serverUpgraded);
+							$("#spnServersVersionNPlusOne").text(parseInt(serverNum.serverUpgraded) + serverUpgraded);
+							serverUpgraded++;
+						}
+					},
+					cache : false
+				});
+				if (serverUpgraded >= totalServerNumber) {
+					$("#btnUpgradeStartStop").button('option', 'label', 'Start Upgrading');
+					$("#btnUpgradeStartStop").removeClass("stop");
+					clearInterval(spnRefreshIntervalId);
+				}
+			}, 2000);
+		}, function() {
+			$(this).button('option', 'label', 'Start Upgrading');
+			$(this).removeClass("stop");
+			clearInterval(spnRefreshIntervalId);
+		});
+
+		$("#inputUpgradeInterval").spinner({
+			min : 10,
+			max : 500,
+			step : 20,
+			start : 10
+		});
+		$("#btnResetServers").button().click(function () {
+			serverUpgraded = 0;
+			$("#spnServersVersionN").text(totalServerNumber);
+			$("#spnServersVersionNPlusOne").text(0);
+		});
+
 	});
-	
-	$("#inputUpgradeInterval").spinner({
-      min: 10,
-      max: 500,
-      step: 20,
-      start: 10
-    }); 
-    
-  });
-  
+
 </script>
 <div style ="width: 400px; height: 40px; margin: 0 auto">
-	<label for="inputUpgradeInterval">Upgrade Interval:</label> <input id="inputUpgradeInterval" name="value" size="8"/>
-	<button id="btnUpgradeStartStop">Start Upgrading</button>
+	<label for="inputUpgradeInterval">Upgrade Interval:</label>
+	<input id="inputUpgradeInterval" name="value" size="8"/>
+	<button id="btnUpgradeStartStop">
+		Start Upgrading
+	</button>
 </div>
 <div style ="width: 400px; height: 180px; margin: 0 auto">
-	<div style ="width: 120px;height: 200px;float: left;margin-left: 65px;"> 
-		<span style ="font-size: 96px;color:#0073ea;">6</span> </br><span>#Version N Server </span>
+	<div style ="width: 120px;height: 200px;float: left;margin-left: 65px;">
+		<span style ="font-size: 96px;color:#0073ea;" id = "spnServersVersionN">7</span></br><span># Version N Servers </span>
 	</div>
 	<div style ="width: 120px;height: 200px;float: left;margin-left: 65px;">
-		 <span style ="font-size: 96px;color:#ff0084;">1</span></br><span>#Version N+1 Server</span>
+		<span style ="font-size: 96px;color:#ff0084;" id = "spnServersVersionNPlusOne">0</span></br><span># Version N+1 Servers</span>
 	</div>
 </div>
 
-<button id="btnResetServers">Reset</button>
-
+<button id="btnResetServers">
+	Reset
+</button>
 
