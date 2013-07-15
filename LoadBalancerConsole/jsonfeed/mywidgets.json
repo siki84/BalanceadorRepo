@@ -7,24 +7,31 @@
 				"id": "widget1",
 				"column": "first",
 				"open": true,
-				"url": "widget_result.html"
+				"url": "widgets/widget_result.html"
 			}, {
 				"title": "Upgrade Configuration",
 				"column": "third",
 				"id": "widget_upgrade",
-				"url": "widget_upgrade.html",
+				"url": "widgets/widget_upgrade.html",
 				"open": true
 			}, {
 				"title": "Client Configuration",
 				"id": "widget_client",
 				"column": "second",
-				"url": "widget_client.html",
+				"url": "widgets/widget_client.html",
 				"open": true
 			}, {
 				"title": "CPU Utilizations",
 				"id": "widget_cpu_util",
 				"column": "third",
-				"url": "widget_cpu_util.html",
+				"url": "widgets/widget_cpu_util.html",
+				"open": true
+			}
+			, {
+				"title": "Structure",
+				"id": "widget_structure",
+				"column": "third",
+				"url": "widgets/widget_structure.html",
 				"open": true
 			}
 		]
