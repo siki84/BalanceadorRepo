@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>jOrgChart - A jQuery OrgChart Plugin</title>
+		<link rel="stylesheet" href="../themes/default/bootstrap.min.css"/>
+		<link rel="stylesheet" href="../themes/default/jquery.jOrgChart.css"/>
+		<link rel="stylesheet" href="../themes/default/custom.css"/>
+		<link href="../themes/default/prettify.css" type="text/css" rel="stylesheet" />
+
+		<script type="text/javascript" src="prettify.js"></script>
+
+		<!-- jQuery includes -->
+		<script type="text/javascript" src="../js/lib/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="../js/lib/jquery-ui-1.10.3.custom.js"></script>
+
+		<script src="../js/lib/jquery.jOrgChart.js"></script>
+
+		<script>
+			jQuery(document).ready(function() {
+				$("#org").jOrgChart({
+					chartElement : '#chart',
+					dragAndDrop : false
+				});
+			});
+		</script>
+	</head>
+
+	<body onload="prettyPrint();">
+
+		<ul id="org" style="display:none">
+			<li>
+				Top level load balancer
+				<ul>
+					<li>
+						Lower level load balancer
+						<ul>
+							<li>Server 1</li>
+							<li>Server 2</li>
+							<li>Server 3</li>
+						</ul>
+					</li>
+					<li>
+						Lower level load balancer
+						<ul>
+							<li><img src="../theme/load_balancer_not_upgraded.png" alt="Raspberry"/>Server 4</li>
+							<li>Server 5</li>
+							<li>Server 6</li>
+							<li>Server 7</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
+		<div id="chart" class="orgChart"></div>
+
+		<script>
+			jQuery(document).ready(function() {
+
+				$('#list-html').text($('#org').html());
+
+				//$("#org").bind("DOMSubtreeModified", function() {
+				//	$('#list-html').text('');
+
+				//	$('#list-html').text($('#org').html());
+
+				//	prettyPrint();
+				//});
+			});
+		</script>
+
+	</body>
+</html>
