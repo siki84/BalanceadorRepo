@@ -1,62 +1,74 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<link rel="stylesheet" href="css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="css/jquery.jOrgChart.css"/>
-		<link rel="stylesheet" href="css/custom.css"/>
+<link rel="stylesheet" href="../css/jquery.jOrgChart.css"/>
+<link rel="stylesheet" href="../css/custom.css"/>
 
-		<!-- jQuery includes -->
-		<script type="text/javascript" src="js/lib/jquery-1.6.4.min.js"></script>
-		<script type="text/javascript" src="js/lib/jquery-ui-1.10.3.custom.js"></script>
+<script type="text/javascript" src="../js/lib/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="../js/lib/jquery-ui-1.10.3.custom.js"></script>
 
-		<script src="js/lib/jquery.jOrgChart.js"></script>
+<script src="../js/lib/jquery.jOrgChart.js"></script>
 
-		<script>
-			jQuery(document).ready(function() {
-				$("#org").jOrgChart({
-					chartElement : '#chart',
-					dragAndDrop : false
-				});
-			});
-		</script>
-	</head>
+<script>
+	var currentServer = 1;
+	$(document).ready(function() {
+		$("#org").jOrgChart({
+			chartElement : '#chart',
+			dragAndDrop : false
+		});
 
-	<body onload="prettyPrint();">
-		<ul id="org" style="display:none">
-			<li><img src="css/images/load_balancer_not_upgraded.png" alt="Not Upgraded" width="48"/>
-				Top level load balancer
+		setInterval(function() {
+			if (currentServer <= 7) {
+				$(".server" + currentServer).attr('src', 'css/images/server_upgraded.png');
+				currentServer++;
+			} else {
+				for (var i = 0; i <= 7; i++)
+					$(".server" + i).attr('src', 'css/images/server_not_upgraded.png');
+				$(".loadBalancerLower1").attr('src', 'css/images/load_balancer_not_upgraded.png');
+				$(".loadBalancerLower2").attr('src', 'css/images/load_balancer_not_upgraded.png');
+				currentServer = 1;
+			}
+			if (currentServer == 2)
+				$(".loadBalancerLower1").attr('src', 'css/images/load_balancer_upgraded.png');
+			if (currentServer == 5)
+				$(".loadBalancerLower2").attr('src', 'css/images/load_balancer_upgraded.png');
+
+		}, 2000);
+	
+	});
+	
+
+</script>
+
+<ul id="org" style="display:none">
+	<li><img class="loadBalancerTop" src="css/images/load_balancer_not_upgraded.png" alt="Not Upgraded" width="48"/>
+
+		<ul>
+			<li><img class="loadBalancerLower1" src="css/images/load_balancer_not_upgraded.png" alt="Not Upgraded" width="48"/>
+
 				<ul>
-					<li><img src="css/images/load_balancer_upgraded.png" alt="Not Upgraded" width="48"/>
-						Lower level load balancer
-						<ul>
-							<li><img src="css/images/server_upgraded.png" alt="Not Upgraded" width="48"/>Server 1</li>
-							<li><img src="css/images/server_upgraded.png" alt="Not Upgraded" width="48"/>Server 2</li>
-							<li><img src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>Server 3</li>
-						</ul>
+					<li><img class="server1" src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>70%
 					</li>
-					<li><img src="css/images/load_balancer_not_upgraded.png" alt="Not Upgraded" width="48"/>
-						Lower level load balancer
-						<ul>
-							<li><img src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>Server 4</li>
-							<li><img src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>Server 5</li>
-							<li><img src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>Server 6</li>
-							<li><img src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>Server 7</li>
-						</ul>
+					<li><img class="server2" src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>70%
+					</li>
+					<li><img class="server3" src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>70%
+					</li>
+				</ul>
+			</li>
+			<li><img class="loadBalancerLower2" src="css/images/load_balancer_not_upgraded.png" alt="Not Upgraded" width="48"/>
+
+				<ul>
+					<li><img class="server4" src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>70%
+					</li>
+					<li><img class="server5" src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>70%
+					</li>
+					<li><img class="server6" src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>70%
+					</li>
+					<li><img class="server7" src="css/images/server_not_upgraded.png" alt="Not Upgraded" width="48"/>70%
 					</li>
 				</ul>
 			</li>
 		</ul>
+	</li>
+</ul>
 
-		<div id="chart" class="orgChart" style="width:400px"></div>
+<div id="chart" class="orgChart" style="width:400px"></div>
 
-		<script>
-			jQuery(document).ready(function() {
 
-				$('#list-html').text($('#org').html());
-
-			});
-		</script>
-
-	</body>
-</html>

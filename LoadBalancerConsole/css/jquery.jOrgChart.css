@@ -2,7 +2,6 @@
 /* Draw the lines */
 .jOrgChart .line {
   height                : 20px;
-  width                 : 4px;
 }
 
 .jOrgChart .down {

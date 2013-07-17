@@ -1,6 +1,194 @@
-<div class="piecontainer">
+<link rel="stylesheet" type="text/css" href="../css/dashboardui.css" />
+<link rel="stylesheet" type="text/css" href="../css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript" src="../js/lib/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="../js/lib/jquery-ui-1.10.3.custom.js"></script>
+<script type="text/javascript" src="../js/lib/highcharts.js"></script>
 
-  	<div class="pielocation"></div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#tabs").tabs({
+			event : "mouseover"
+		});
 
+		$("#divVersionCPUChart").highcharts({
+			chart : {
+				type : 'spline',
+				animation : Highcharts.svg,
+				width : 400,
+				events : {
+					load : function() {
+						var seriesN = this.series[0];
+						var seriesN1 = this.series[1];
+						setInterval(function() {
+							$.ajax({
+								url : 'jsonfeed/serverCPU.json',
+								success : function(responce) {
+									var x = (new Date()).getTime();
+									// current time
+									var points = responce.data;
+									var N =0.0;
+									var NNumber = 0;
+									var N1=0.0;
+									var N1Number = 0;
+									//Random for demostration
+									var randomNumberN = Math.round(Math.random() * 40);
+									var randomNumberN1 = Math.round(Math.random() * 10);
 
-</div>
+									if (seriesN.data.length == 1) {
+										var time = (new Date()).getTime(), i;
+										seriesN.addPoint([time - 30 * 2000, 0], true, true);
+										seriesN1.addPoint([time - 30 * 2000, 0], true, true);
+										for ( i = -29; i <= 0; i++) {
+											seriesN.addPoint([time + i * 2000, 0], true, false);
+											seriesN1.addPoint([time + i * 2000, 0], true, false);
+										}
+									}
+									$.each(points, function(index, point) {
+										if(point.version == 'N')
+										{
+											N = N + parseInt(point.utilization);
+											NNumber = NNumber + 1;
+										}
+										else
+										{
+											N1 = N1 + parseInt(point.utilization);
+											N1Number = N1Number + 1;
+										}
+									});
+									if(NNumber != 0)
+										N = N/NNumber + randomNumberN;
+									if(N1Number != 0)
+										N1 = N1/N1Number+ randomNumberN1;
+									seriesN.addPoint([x, N], true, true);
+									seriesN1.addPoint([x, N1], true, true);
+
+								},
+								cache : false
+							});
+						}, 2000);
+					}
+				}
+
+			},
+			title : {
+				text : 'Version CPU Utilization'
+			},
+			credits : {
+				enabled : false
+			},
+			colors : ['#0073ea', '#ff0084'],
+
+			xAxis : {
+				type : 'datetime',
+				tickPixelInterval : 150
+			},
+			yAxis : {
+				title : null,
+				min : 0,
+				max : 100,
+				minorGridLineWidth : 0,
+				gridLineWidth : 1,
+				alternateGridColor : null
+			},
+			tooltip : {
+				headerFormat : '',
+				pointFormat : '<span style="color:{series.color}"></span><b>{point.y}</b> % <br/>'
+			},
+			plotOptions : {
+				spline : {
+					lineWidth : 2,
+					states : {
+						hover : {
+							lineWidth : 3
+						}
+					},
+					marker : {
+						enabled : false
+					},
+					pointInterval : 10,
+					pointStart : 0
+				}
+			},
+			series : [{
+				name : 'Version N',
+				data : [[(new Date()).getTime(), 0]]
+
+			}, {
+				name : 'Version N+1',
+				data : [[(new Date()).getTime(), 0]]
+			}]
+		});
+		$("#divServerCPUChart").highcharts({
+			chart : {
+				type : 'spline',
+				animation : Highcharts.svg,
+				width : 400
+
+			},
+			title : {
+				text : 'Server CPU Utilization'
+			},
+			credits : {
+				enabled : false
+			},
+			colors : ['#0073ea', '#ff0084'],
+
+			xAxis : {
+				type : 'datetime',
+				tickPixelInterval : 150
+			},
+			yAxis : {
+				title : null,
+				min : 0,
+				max : 100,
+				minorGridLineWidth : 0,
+				gridLineWidth : 1,
+				alternateGridColor : null
+			},
+			tooltip : {
+				headerFormat : '',
+				pointFormat : '<span style="color:{series.color}"></span><b>{point.y}</b> % <br/>'
+			},
+			plotOptions : {
+				spline : {
+					lineWidth : 2,
+					states : {
+						hover : {
+							lineWidth : 3
+						}
+					},
+					marker : {
+						enabled : false
+					},
+					pointInterval : 10,
+					pointStart : 0
+				}
+			},
+			series : [{
+				name : 'Server 1',
+				data : [[(new Date()).getTime(), 0]]
+			}, {
+				name : 'Server 2',
+				data : [[(new Date()).getTime(), 0]]
+			}, {
+				name : 'Server 3',
+				data : [[(new Date()).getTime(), 0]]
+			}]
+
+		});
+	});
+
+</script>
+<div id="tabs">
+	<ul>
+		<li>
+			<a href="#divVersionCPUChart">Version Based Utilization</a>
+		</li>
+		<li>
+			<a href="#divServerCPUChart">Server Based Utilization</a>
+		</li>
+	</ul>
+	<div id="divVersionCPUChart" style="max-width: 95%; height: 400px; margin: 0 auto"></div>
+	<div id="divServerCPUChart" style="max-width: 95%; height: 400px; margin: 0 auto"></div>
+</div
+

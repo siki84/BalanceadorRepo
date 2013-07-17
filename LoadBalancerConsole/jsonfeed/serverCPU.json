@@ -1,0 +1,43 @@
+{
+  "data" : [
+    {
+      "server" : "1",
+      "utilization" : "54",
+      "version": "N1"
+    },
+    {
+      "server" : "2",
+      "utilization" : "90",
+      "version": "N1"
+    },
+    {
+      "server" : "3",
+      "utilization" : "32",
+      "version": "N"
+    }
+    ,
+    {
+      "server" : "4",
+      "utilization" : "32",
+      "version": "N"
+    }
+    ,
+    {
+      "server" : "5",
+      "utilization" : "58",
+      "version": "N"
+    }
+    ,
+    {
+      "server" : "6",
+      "utilization" : "32",
+      "version": "N"
+    }
+    ,
+    {
+      "server" : "7",
+      "utilization" : "26",
+      "version": "N"
+    }
+  ]
+}
