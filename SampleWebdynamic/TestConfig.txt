@@ -1,0 +1,20 @@
+/* Configuration File (Ignore this comment)
+/* This file is required for the application to know about the
+/* hierarchy of the load balancers and the test setup
+/* The first load balancer in the file should be the top level load balancer
+/* Then the second load balancer is the second level load balancer and followed by
+/*the servers under the load balancer
+/* Each row has the server/Loadbalancer name followed by the IP address
+/* The function which reads this file should have intelligence to ignore
+/* the lines which start with "/*"
+/* Server#/Loadbalancer# ipAddress weight version(1/2)
+Loadbalancer1 10.0.0.4 2 1
+Loadbalancer2 10.0.0.5 3 1
+Loadbalancer3 10.0.0.6 4 1
+Server1 10.0.0.7 1 1
+Server2 10.0.0.8 1 1
+Server3 10.0.0.9 1 1
+Server4 10.0.0.10 1 1
+Server5 10.0.0.11 1 1
+Server6 10.0.0.12 1 1
+Server7 10.0.0.13 1 1
