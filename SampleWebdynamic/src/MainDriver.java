@@ -32,8 +32,6 @@ public class MainDriver {
 			log1.info("Starting Upgrade thread");
 			(new Thread(new UpgradeController())).start();	
 		}
-		//System.out.println("Upgardes"+ug.getNumOfUpgrades());
-		ug.startUpgarde();
 		// Close logger object
 		log.close();
 	}
