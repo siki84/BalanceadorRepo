@@ -75,15 +75,13 @@ public class RemoteConnection {
 		e.printStackTrace();
 		return false;
 		// TODO Auto-generated catch block
-
 	}  
        return true;
    }
 
 public void newVersion() {
 	// Copy the new version of the application to the tomcat folder
-	// Use runCommand to copy and rename folders
-	
+	// Use runCommand to copy and rename folders	
 }
 
 }

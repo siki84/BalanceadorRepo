@@ -9,9 +9,7 @@ public class UpgradeLogger {
 	private FileHandler fh; 
 	public Logger log()
 	{
-		
-
- 
+	
 
         // This block configure the logger with handler and formatter  
         try {

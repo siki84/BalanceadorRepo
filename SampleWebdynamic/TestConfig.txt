@@ -7,14 +7,16 @@
 /* Each row has the server/Loadbalancer name followed by the IP address
 /* The function which reads this file should have intelligence to ignore
 /* the lines which start with "/*"
-/* Server#/Loadbalancer# ipAddress weight version(1/2)
-Loadbalancer1 10.0.0.4 2 1
-Loadbalancer2 10.0.0.5 3 1
-Loadbalancer3 10.0.0.6 4 1
-Server1 10.0.0.7 1 1
-Server2 10.0.0.8 1 1
-Server3 10.0.0.9 1 1
-Server4 10.0.0.10 1 1
-Server5 10.0.0.11 1 1
-Server6 10.0.0.12 1 1
-Server7 10.0.0.13 1 1
+/* Server#/Loadbalancer# ID ipAddress/ipTag weight version(1/2)
+/* LoadBalancer : ID	lbNameInConfig/nameTag	ipTag/noTag	IpAddress	weight	version parent
+/* Server : ID servername serverIpTagConfig weight version parent
+Loadbalancer1 TopLoadBalancer noTag ec2-54-226-78-37.compute-1.amazonaws.com 2 1 none
+Loadbalancer2 lb1 loadbalancer1:80 ec2-50-19-38-180.compute-1.amazonaws.com 3 1 TopLoadBalancer
+Loadbalancer3 lb2 loadbalancer2:80 ec2-54-242-148-147.compute-1.amazonaws.com 4 1 TopLoadBalancer
+Server1 server1 server1:8080 na 1 1 lb1
+Server2 server2 server2:8080 na 1 1 lb1
+Server3 server3 server3:8080 na 1 1 lb1
+Server4 server4 server4:8080 na 1 1 lb2
+Server5 server5 server5:8080 na 1 1 lb2
+Server6 server6 server5:8080 na 1 1 lb2
+Server7 server7 server5:8080 na 1 1 lb2
