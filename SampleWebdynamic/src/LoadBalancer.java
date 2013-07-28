@@ -17,6 +17,14 @@ public class LoadBalancer {
 	}
 	private String parent = "None";
 	private String configTag = null;
+	public int getNewVersionWeight() {
+		return newVersionWeight;
+	}
+
+	public void setNewVersionWeight(int newVersionWeight) {
+		this.newVersionWeight = newVersionWeight;
+	}
+	private int newVersionWeight=0;
 	public LoadBalancer(String lbID, String configTag, String ipAddr, String numberChildren, String version,String parent) {
 		this.loadbalancerID = lbID;
 		this.ipAddress = ipAddr;
@@ -42,6 +50,10 @@ public class LoadBalancer {
 	public int getnumberLoadbalancerChildren() {
 		// TODO Auto-generated method stub
 		return this.numberChildren;
+	}
+	public int setnumberLoadbalancerChildren(int num) {
+		// TODO Auto-generated method stub
+		return this.numberChildren = num;
 	}
 	public int getVersion() {
 		// TODO Auto-generated method stub
@@ -82,6 +94,7 @@ public class LoadBalancer {
 	public boolean disableBackend(Server serverToUpgrade, String backend) {
 		String connect = this.getipAddress();
 		String command = disableServer+ backend +"/"+serverToUpgrade.getServerId();
+		System.out.println("Command: "+ command);
 		HaProxySocket rc = new HaProxySocket();
 		return rc.runCommand(connect, command);
 		
@@ -90,6 +103,7 @@ public class LoadBalancer {
 	public boolean EnableBackend(Server serverToUpgrade, String backend) {
 		String connect = this.getipAddress();
 		String command = enableServer+backend +"/"+"new"+serverToUpgrade.getServerId();
+		System.out.println("Command: "+ command);
 		HaProxySocket rc = new HaProxySocket();
 		return rc.runCommand(connect, command);
 		
@@ -114,20 +128,29 @@ public class LoadBalancer {
 
 	public boolean decreaseWeight(LoadBalancer lb, String backend) {
 		String connect = this.getipAddress();
-		Integer w = this.getnumberLoadbalancerChildren();
+		Integer w = lb.getnumberLoadbalancerChildren();
+		System.out.println("Decreaseing: Original weght: "+w);
 		w--;
 		// noVersion/web01 1
+		System.out.println("Decreaseing: New weight: "+w);
+		lb.setnumberLoadbalancerChildren(w);
 		String command = setWeight+backend+"/"+lb.getloadbalancerID()+" "+w.toString();
+		System.out.println("Command: "+ command);
 		HaProxySocket rc = new HaProxySocket();
 		return rc.runCommand(connect, command);
 		
 	}
 
 	public boolean increaseWeight(LoadBalancer lb, String backend) {
+		// Fix: TO be called on the newVersion weight
 		String connect = this.getipAddress();
-		Integer w = this.getnumberLoadbalancerChildren();
+		Integer w = lb.getNewVersionWeight();
+		System.out.println("Inc weight Original :"+w);
 		w++;
+		System.out.println("Inc weight New :"+w);
+		lb.setNewVersionWeight(w);
 		String command = setWeight+backend+"/"+lb.getloadbalancerID()+" "+w.toString();
+		System.out.println("Command: "+ command);
 		HaProxySocket rc = new HaProxySocket();
 		return rc.runCommand(connect, command);
 		
